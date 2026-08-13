@@ -25,6 +25,8 @@ connectToMongoDB();
 // Redis Connection
 // --------------
 
+console.log("Redis URL exists:", !!process.env.REDIS_URL);
+
 const redis = new Redis(process.env.REDIS_URL);
 
 redis.once("ready", () => {
@@ -57,6 +59,10 @@ const globalLimiter = rateLimit({
 });
 
 app.use(globalLimiter);
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the User API");
+});
 
 app.get("/user/:id", async (req, res) => {
   try {
@@ -105,10 +111,11 @@ app.post("/user", async (req, res) => {
 });
 
 app.get("/test", async (req, res) => {
-  res.render("index" ,{
+  res.render("index", {
     username: "John Doe",
     bio: "A passionate developer and tech enthusiast.",
-    profilePicture: "https://imgs.search.brave.com/ACedRZHztn-OEwyhM1B15tdkWFNDmr_vu6lbM9Pyr10/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4t/ZnJvbnQuZnJlZXBp/ay5jb20vaG9tZS9h/bm9uLXJ2bXAvY3Jl/YXRpdmUtc3VpdGUv/cGhvdG9ncmFwaHkv/cmVpbWFnaW5lLndl/YnA",
+    profilePicture:
+      "https://imgs.search.brave.com/ACedRZHztn-OEwyhM1B15tdkWFNDmr_vu6lbM9Pyr10/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4t/ZnJvbnQuZnJlZXBp/ay5jb20vaG9tZS9h/bm9uLXJ2bXAvY3Jl/YXRpdmUtc3VpdGUv/cGhvdG9ncmFwaHkv/cmVpbWFnaW5lLndl/YnA",
   });
 });
 

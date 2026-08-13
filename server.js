@@ -29,8 +29,16 @@ console.log("Redis URL exists:", !!process.env.REDIS_URL);
 
 const redis = new Redis(process.env.REDIS_URL);
 
-redis.once("ready", () => {
+redis.on("connect", () => {
   console.log("Connected to Redis");
+});
+
+redis.on("ready", () => {
+  console.log("Redis is ready to use");
+});
+
+redis.on("error", (err) => {
+  console.error("Redis error:", err);
 });
 
 const app = express();
